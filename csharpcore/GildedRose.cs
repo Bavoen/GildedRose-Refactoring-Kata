@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using csharpcore.ItemQualityUpdater;
+using System.Collections.Generic;
 
 namespace csharpcore
 {
@@ -7,26 +8,94 @@ namespace csharpcore
         private const string AGED_BRIE = "Aged Brie";
         private const string BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
         private const string SULFURAS = "Sulfuras, Hand of Ragnaros";
-        
-        readonly IList<Item> Items;
+        private const string CONJURED = "Conjured Mana Cake";
 
-        public GildedRose(IList<Item> Items)
+        readonly IList<Item> Items;
+        internal ItemQualityUpdaterFactory ItemQualityUpdaterFactory { get; }
+
+        public GildedRose(IList<Item> items)
         {
-            this.Items = Items;
+            Items = items;
+            ItemQualityUpdaterFactory = new ItemQualityUpdaterFactory();
         }
 
         public void UpdateQuality()
         {
             foreach (Item item in Items)
             {
-                if (item.Name != AGED_BRIE && item.Name != BACKSTAGE_PASSES)
+                if(item.Name != AGED_BRIE && item.Name != BACKSTAGE_PASSES && item.Name != SULFURAS && item.Name != CONJURED)
                 {
-                    if (item.Quality > 0)
+                    var qualityUpdater = ItemQualityUpdaterFactory.GetQualityUpdater(item);
+                    qualityUpdater.UpdateQuality(item);
+                }
+                else
+                {
+                    LegacyUpdateQuality(item);
+                }
+            }
+        }
+
+        public void LegacyUpdateQuality(Item item)
+        {
+            if (item.Name != AGED_BRIE && item.Name != BACKSTAGE_PASSES)
+            {
+                if (item.Quality > 0)
+                {
+                    if (item.Name != SULFURAS)
                     {
-                        if (item.Name != SULFURAS)
+                        item.Quality = item.Quality - 1;
+                    }
+                }
+            }
+            else
+            {
+                if (item.Quality < 50)
+                {
+                    item.Quality = item.Quality + 1;
+
+                    if (item.Name == BACKSTAGE_PASSES)
+                    {
+                        if (item.SellIn < 11)
                         {
-                            item.Quality = item.Quality - 1;
+                            if (item.Quality < 50)
+                            {
+                                item.Quality = item.Quality + 1;
+                            }
                         }
+
+                        if (item.SellIn < 6)
+                        {
+                            if (item.Quality < 50)
+                            {
+                                item.Quality = item.Quality + 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (item.Name != SULFURAS)
+            {
+                item.SellIn = item.SellIn - 1;
+            }
+
+            if (item.SellIn < 0)
+            {
+                if (item.Name != AGED_BRIE)
+                {
+                    if (item.Name != BACKSTAGE_PASSES)
+                    {
+                        if (item.Quality > 0)
+                        {
+                            if (item.Name != SULFURAS)
+                            {
+                                item.Quality = item.Quality - 1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        item.Quality = item.Quality - item.Quality;
                     }
                 }
                 else
@@ -34,58 +103,6 @@ namespace csharpcore
                     if (item.Quality < 50)
                     {
                         item.Quality = item.Quality + 1;
-
-                        if (item.Name == BACKSTAGE_PASSES)
-                        {
-                            if (item.SellIn < 11)
-                            {
-                                if (item.Quality < 50)
-                                {
-                                    item.Quality = item.Quality + 1;
-                                }
-                            }
-
-                            if (item.SellIn < 6)
-                            {
-                                if (item.Quality < 50)
-                                {
-                                    item.Quality = item.Quality + 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (item.Name != SULFURAS)
-                {
-                    item.SellIn = item.SellIn - 1;
-                }
-
-                if (item.SellIn < 0)
-                {
-                    if (item.Name != AGED_BRIE)
-                    {
-                        if (item.Name != BACKSTAGE_PASSES)
-                        {
-                            if (item.Quality > 0)
-                            {
-                                if (item.Name != SULFURAS)
-                                {
-                                    item.Quality = item.Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            item.Quality = item.Quality - item.Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (item.Quality < 50)
-                        {
-                            item.Quality = item.Quality + 1;
-                        }
                     }
                 }
             }
