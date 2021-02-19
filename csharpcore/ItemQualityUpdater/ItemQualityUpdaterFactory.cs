@@ -17,7 +17,8 @@ namespace csharpcore.ItemQualityUpdater
             updaterMap = new Dictionary<string, IItemQualityUpdater>
             {
                 { AGED_BRIE, new AgedBrieQualityUpdater() },
-                { BACKSTAGE_PASSES, new BackstagePassesQualityUpdater() }
+                { BACKSTAGE_PASSES, new BackstagePassesQualityUpdater() },
+                { SULFURAS, new SulfurasQualityUpdater() }
             };
         }
 
