@@ -231,7 +231,7 @@ namespace csharpcore
             Items[0].Quality.Should().Be(0);
         }
 
-        [Fact(Skip = "Not implemented yet")]
+        [Fact]
         public void ConjuredItemUpdate()
         {
             // Given
@@ -246,7 +246,7 @@ namespace csharpcore
             Items[0].Quality.Should().Be(8);
         }
 
-        [Fact(Skip = "Not implemented yet")]
+        [Fact]
         public void ConjuredItemAfterSellDateUpdate()
         {
             // Given
@@ -261,7 +261,7 @@ namespace csharpcore
             Items[0].Quality.Should().Be(6);
         }
 
-        [Fact(Skip = "Not implemented yet")]
+        [Fact]
         public void ConjuredItemQualityZeroUpdate()
         {
             // Given

@@ -18,7 +18,8 @@ namespace csharpcore.ItemQualityUpdater
             {
                 { AGED_BRIE, new AgedBrieQualityUpdater() },
                 { BACKSTAGE_PASSES, new BackstagePassesQualityUpdater() },
-                { SULFURAS, new SulfurasQualityUpdater() }
+                { SULFURAS, new SulfurasQualityUpdater() },
+                { CONJURED, new ConjuredItemQualityUpdater() }
             };
         }
 
