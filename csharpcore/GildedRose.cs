@@ -23,7 +23,7 @@ namespace csharpcore
         {
             foreach (Item item in Items)
             {
-                if(item.Name != AGED_BRIE && item.Name != BACKSTAGE_PASSES && item.Name != SULFURAS && item.Name != CONJURED)
+                if(item.Name != BACKSTAGE_PASSES && item.Name != SULFURAS && item.Name != CONJURED)
                 {
                     var qualityUpdater = ItemQualityUpdaterFactory.GetQualityUpdater(item);
                     qualityUpdater.UpdateQuality(item);
