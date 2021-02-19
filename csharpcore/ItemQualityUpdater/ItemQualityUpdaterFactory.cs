@@ -10,6 +10,7 @@ namespace csharpcore.ItemQualityUpdater
         private const string CONJURED = "Conjured Mana Cake";
 
         private readonly Dictionary<string, IItemQualityUpdater> updaterMap;
+        private readonly IItemQualityUpdater defaultQualityUpdater;
 
         public ItemQualityUpdaterFactory()
         {
@@ -20,11 +21,12 @@ namespace csharpcore.ItemQualityUpdater
                 { SULFURAS, new SulfurasQualityUpdater() },
                 { CONJURED, new ConjuredItemQualityUpdater() }
             };
+            defaultQualityUpdater = new DefaultItemQualityUpdater();
         }
 
         public IItemQualityUpdater GetQualityUpdater(Item item)
         {
-            return updaterMap.TryGetValue(item.Name, out var value) ? value : new DefaultItemQualityUpdater();
+            return updaterMap.TryGetValue(item.Name, out var value) ? value : defaultQualityUpdater;
         }
     }
 }
