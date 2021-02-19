@@ -6,7 +6,7 @@ namespace csharpcore
     public class GildedRose
     {
         readonly IList<Item> Items;
-        private ItemQualityUpdaterFactory ItemQualityUpdaterFactory
+        private ItemQualityUpdaterFactory ItemQualityUpdaterFactory;
 
         public GildedRose(IList<Item> items)
         {
